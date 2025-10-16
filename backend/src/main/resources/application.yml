@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/sistema_stock_db
+    username: stock_user
+    password: stock_password

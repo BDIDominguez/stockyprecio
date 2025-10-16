@@ -1,0 +1,270 @@
+# Mapa Conceptual - Base de Datos Sistema Stock
+
+## Entidades Principales
+
+### 1. PRODUCTOS (Maestro de productos)
+```sql
+CREATE TABLE productos (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(200) NOT NULL,
+    descripcion TEXT,
+    categoria_id BIGINT,
+    proveedor_id BIGINT,
+    stock_minimo INT DEFAULT 0,
+    maneja_stock BOOLEAN DEFAULT TRUE,
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    usuario_modificacion VARCHAR(50),
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id)
+);
+```
+
+### 2. CATEGORIAS (Clasificación de productos)
+```sql
+CREATE TABLE categorias (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(500),
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    usuario_modificacion VARCHAR(50)
+);
+```
+
+### 3. PROVEEDORES (Maestro de proveedores)
+```sql
+CREATE TABLE proveedores (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE,
+    nombre VARCHAR(200) NOT NULL,
+    contacto VARCHAR(100),
+    telefono VARCHAR(50),
+    email VARCHAR(100),
+    direccion TEXT,
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    usuario_modificacion VARCHAR(50)
+);
+```
+
+### 4. SUCURSALES (Ubicaciones físicas)
+```sql
+CREATE TABLE sucursales (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(20) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    direccion TEXT,
+    telefono VARCHAR(50),
+    encargado VARCHAR(100),
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    usuario_modificacion VARCHAR(50)
+);
+```
+
+### 5. CLIENTES (Maestro de clientes)
+```sql
+CREATE TABLE clientes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE,
+    nombre VARCHAR(200) NOT NULL,
+    apellido VARCHAR(200),
+    documento VARCHAR(50),
+    telefono VARCHAR(50),
+    email VARCHAR(100),
+    direccion TEXT,
+    permite_fiado BOOLEAN DEFAULT FALSE,
+    limite_credito DECIMAL(10,2) DEFAULT 0,
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    usuario_modificacion VARCHAR(50)
+);
+```
+
+### 6. STOCK (Inventario por sucursal)
+```sql
+CREATE TABLE stock (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    producto_id BIGINT NOT NULL,
+    sucursal_id BIGINT NOT NULL,
+    cantidad_actual INT DEFAULT 0,
+    cantidad_reservada INT DEFAULT 0,
+    costo_promedio DECIMAL(10,2) DEFAULT 0,
+    fecha_ultima_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_producto_sucursal (producto_id, sucursal_id),
+    FOREIGN KEY (producto_id) REFERENCES productos(id),
+    FOREIGN KEY (sucursal_id) REFERENCES sucursales(id)
+);
+```
+
+### 7. PRECIOS (Historial de precios)
+```sql
+CREATE TABLE precios (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    producto_id BIGINT NOT NULL,
+    sucursal_id BIGINT,  -- NULL = precio general
+    precio_costo DECIMAL(10,2) NOT NULL,
+    precio_venta DECIMAL(10,2) NOT NULL,
+    fecha_desde DATE NOT NULL,
+    fecha_hasta DATE,
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    FOREIGN KEY (producto_id) REFERENCES productos(id),
+    FOREIGN KEY (sucursal_id) REFERENCES sucursales(id)
+);
+```
+
+## Transacciones y Movimientos
+
+### 8. MOVIMIENTOS_CABECERA (Encabezado de transacciones)
+```sql
+CREATE TABLE movimientos_cabecera (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    numero VARCHAR(50) UNIQUE NOT NULL,
+    tipo ENUM('COMPRA', 'VENTA', 'TRANSFERENCIA', 'AJUSTE', 'DEVOLUCION') NOT NULL,
+    fecha DATE NOT NULL,
+    sucursal_origen_id BIGINT,
+    sucursal_destino_id BIGINT,
+    cliente_id BIGINT,
+    proveedor_id BIGINT,
+    total DECIMAL(10,2) DEFAULT 0,
+    observaciones TEXT,
+    estado ENUM('BORRADOR', 'CONFIRMADO', 'ANULADO') DEFAULT 'BORRADOR',
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    usuario_modificacion VARCHAR(50),
+    FOREIGN KEY (sucursal_origen_id) REFERENCES sucursales(id),
+    FOREIGN KEY (sucursal_destino_id) REFERENCES sucursales(id),
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    FOREIGN KEY (proveedor_id) REFERENCES proveedores(id)
+);
+```
+
+### 9. MOVIMIENTOS_DETALLE (Detalle de cada transacción)
+```sql
+CREATE TABLE movimientos_detalle (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    movimiento_id BIGINT NOT NULL,
+    producto_id BIGINT NOT NULL,
+    cantidad INT NOT NULL,
+    precio_costo DECIMAL(10,2) NOT NULL,
+    precio_venta DECIMAL(10,2) NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (movimiento_id) REFERENCES movimientos_cabecera(id) ON DELETE CASCADE,
+    FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+```
+
+## Sistema de Créditos
+
+### 10. FIADOS (Control de créditos)
+```sql
+CREATE TABLE fiados (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id BIGINT NOT NULL,
+    movimiento_id BIGINT NOT NULL,
+    monto_total DECIMAL(10,2) NOT NULL,
+    monto_pagado DECIMAL(10,2) DEFAULT 0,
+    monto_pendiente DECIMAL(10,2) NOT NULL,
+    fecha_vencimiento DATE,
+    estado ENUM('PENDIENTE', 'PAGADO', 'VENCIDO', 'CANCELADO') DEFAULT 'PENDIENTE',
+    observaciones TEXT,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    FOREIGN KEY (movimiento_id) REFERENCES movimientos_cabecera(id)
+);
+```
+
+### 11. PAGOS_FIADOS (Registro de pagos)
+```sql
+CREATE TABLE pagos_fiados (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fiado_id BIGINT NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    forma_pago ENUM('EFECTIVO', 'TRANSFERENCIA', 'TARJETA', 'CHEQUE') NOT NULL,
+    fecha_pago DATE NOT NULL,
+    observaciones TEXT,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    usuario_creacion VARCHAR(50),
+    FOREIGN KEY (fiado_id) REFERENCES fiados(id)
+);
+```
+
+## Relaciones Principales
+
+### Productos con otras entidades:
+- **productos.categoria_id** → categorias.id
+- **productos.proveedor_id** → proveedores.id
+
+### Stock multi-sucursal:
+- **stock.producto_id** → productos.id
+- **stock.sucursal_id** → sucursales.id
+- **Unique constraint**: (producto_id, sucursal_id)
+
+### Precios flexibles:
+- **precios.producto_id** → productos.id
+- **precios.sucursal_id** → sucursales.id (opcional)
+
+### Movimientos:
+- **movimientos_cabecera** → clientes, proveedores, sucursales
+- **movimientos_detalle** → movimientos_cabecera, productos
+
+### Sistema de créditos:
+- **fiados** → clientes, movimientos_cabecera
+- **pagos_fiados** → fiados
+
+## Índices Recomendados
+
+```sql
+-- Para consultas frecuentes
+CREATE INDEX idx_productos_categoria ON productos(categoria_id);
+CREATE INDEX idx_productos_proveedor ON productos(proveedor_id);
+CREATE INDEX idx_productos_codigo ON productos(codigo);
+CREATE INDEX idx_stock_producto ON stock(producto_id);
+CREATE INDEX idx_stock_sucursal ON stock(sucursal_id);
+CREATE INDEX idx_movimientos_fecha ON movimientos_cabecera(fecha);
+CREATE INDEX idx_movimientos_tipo ON movimientos_cabecera(tipo);
+CREATE INDEX idx_movimientos_cliente ON movimientos_cabecera(cliente_id);
+CREATE INDEX idx_fiados_cliente ON fiados(cliente_id);
+CREATE INDEX idx_fiados_estado ON fiados(estado);
+```
+
+## Orden de Creación Recomendado
+
+1. **categorias** (sin dependencias)
+2. **proveedores** (sin dependencias)  
+3. **sucursales** (sin dependencias)
+4. **clientes** (sin dependencias)
+5. **productos** (depende de categorias, proveedores)
+6. **stock** (depende de productos, sucursales)
+7. **precios** (depende de productos, sucursales)
+8. **movimientos_cabecera** (depende de clientes, proveedores, sucursales)
+9. **movimientos_detalle** (depende de movimientos_cabecera, productos)
+10. **fiados** (depende de clientes, movimientos_cabecera)
+11. **pagos_fiados** (depende de fiados)
+
+## Características del Sistema
+
+- **Multi-sucursal**: Stock independiente por sucursal
+- **Auditoría completa**: Fechas y usuarios en todas las tablas
+- **Precios flexibles**: Por producto y opcionalmente por sucursal
+- **Movimientos unificados**: Compras, ventas, transferencias en misma estructura
+- **Control de créditos**: Sistema de fiados con pagos parciales
+- **Integridad referencial**: Foreign keys para consistencia
+- **Eliminación lógica**: Campo 'activo' en lugar de DELETE físico
