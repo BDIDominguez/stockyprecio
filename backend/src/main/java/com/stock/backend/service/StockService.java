@@ -25,7 +25,11 @@ public class StockService {
     }
 
     public Stock buscarPorCodigoySucursal(Long codigo, Long sucursal) {
-        return repository.findByCodigoAndSucursal(codigo, sucursal);
+        Optional<Stock> respuesta = repository.findByCodigoAndSucursal(codigo, sucursal);
+        if (respuesta.isPresent()){
+            return null;
+        }
+        return respuesta.get();
     }
 
     public Stock crearStockNuevo(Stock stock) {

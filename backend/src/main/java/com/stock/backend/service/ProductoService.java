@@ -31,6 +31,9 @@ public class ProductoService {
     private CategoriaService categorias;
 
     public Producto nuevoProducto(Producto producto, Long sucursal) {
+        // se crea el nuevo stock, ya que al ser un nuevo producto no existe para el mismo ese Stock  pero por las dudas consultamos que el mismo no exista.
+        Stock existe = stocks.buscarPorCodigoySucursal(producto.getCodigo(), sucursal);
+
         Stock nuevo = new Stock(null, producto.getCodigo(),sucursal,0.00,producto.getStockMinimo());
         Stock respuesta = stocks.crearStockNuevo(nuevo);
         if (respuesta.getId() == null){
