@@ -25,4 +25,9 @@ public class MovimientoTipoController {
         System.out.println("Recibido en el controller " + nuevo.toString());
         return ResponseEntity.ok(service.nuevoMovimiento(nuevo));
     }
+
+    @GetMapping("/siglas/{siglas}")
+    public ResponseEntity<MovimientoTipo> consultarMovimiento(@PathVariable String siglas){
+        return ResponseEntity.ok(service.buscarPorSiglas(siglas));
+    }
 }

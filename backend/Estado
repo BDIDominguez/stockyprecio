@@ -1,0 +1,4 @@
+Se Creo la entidad MovimientoTipo y se creo su controller, su repository y service. en el controller tiene 3 endpoint consulta todos, crea uno y consulta por siglas
+    - funciona pero no tiene DTOs
+    - no controlla errores.
+    - no interactua con nadie.

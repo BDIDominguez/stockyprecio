@@ -25,4 +25,8 @@ public class MovimientoTipoService {
         System.out.println("respuesta del repository " + respuesta);
         return respuesta;
     }
+
+    public MovimientoTipo buscarPorSiglas(String siglas) {
+        return repository.findBySiglas(siglas);
+    }
 }

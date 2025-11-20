@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MovimientoTipoRepository extends JpaRepository<MovimientoTipo, Long> {
+    MovimientoTipo findBySiglas(String siglas);
 }
