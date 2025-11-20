@@ -61,7 +61,7 @@ public class ProductoService {
     public ProductoCompletoDTO productoCompletoPorCodigo(Long codigo, Long sucursal){
         System.out.println("CONSULTANDO SI EXISTE EL PRODUCTO CON CODIGO " + codigo);
         Optional<Producto> prod = productoRepository.findByCodigo(codigo);
-        if (prod.isPresent()){
+        if (prod.isEmpty()){
             Producto producto = prod.get();
             System.out.println("SE ENCONTRO EL CODIGO " + producto);
             Proveedor proveedor = proveedores.buscarPorCodigo(producto.getProveedor());
