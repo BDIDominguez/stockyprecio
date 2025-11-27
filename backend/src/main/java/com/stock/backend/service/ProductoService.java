@@ -9,6 +9,7 @@ import com.stock.backend.repository.CategoriaRespository;
 import com.stock.backend.repository.ProductoRepository;
 import com.stock.backend.repository.ProveedorRepository;
 import com.stock.backend.repository.StockRepository;
+import com.stock.backend.service.stock.StockOrquestadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,8 @@ public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    @Autowired
-    private StockService stocks;
+    //@Autowired
+    //private StockService stocks;
 
     @Autowired
     private ProveedorService proveedores;
@@ -30,9 +31,10 @@ public class ProductoService {
     @Autowired
     private CategoriaService categorias;
 
+    /*
     public Producto nuevoProducto(Producto producto, Long sucursal) {
         // se crea el nuevo stock, ya que al ser un nuevo producto no existe para el mismo ese Stock  pero por las dudas consultamos que el mismo no exista.
-        Stock existe = stocks.buscarPorCodigoySucursal(producto.getCodigo(), sucursal);
+        Stock existe = stocks.  buscarPorCodigoySucursal(producto.getCodigo(), sucursal);
 
         Stock nuevo = new Stock(null, producto.getCodigo(),sucursal,0.00,producto.getStockMinimo());
         Stock respuesta = stocks.crearStockNuevo(nuevo);
@@ -40,7 +42,7 @@ public class ProductoService {
             return null;
         }
         return productoRepository.save(producto);
-    }
+    } */
 
     public List<Producto> listarTodos() {
         return productoRepository.findAll();
@@ -58,6 +60,7 @@ public class ProductoService {
         return productoRepository.save(producto);
     }
 
+    /*
     public ProductoCompletoDTO productoCompletoPorCodigo(Long codigo, Long sucursal){
         System.out.println("CONSULTANDO SI EXISTE EL PRODUCTO CON CODIGO " + codigo);
         Optional<Producto> prod = productoRepository.findByCodigo(codigo);
@@ -76,5 +79,5 @@ public class ProductoService {
         }
         System.out.println("NO SE ENCONTRO PRODUCTO REGRESANDO NULL");
         return null;
-    }
+    } */
 }

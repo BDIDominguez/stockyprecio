@@ -14,7 +14,7 @@ public class StockOrquestadorService {
     private final StockModificarService modificarService;
     private final StockCrearService crearService;
 
-    public Optional<Stock> consultar(String codigo){
+    public Optional<Stock> consultar(Long codigo){
         return consultaService.consultar(codigo);
     }
 

@@ -14,5 +14,5 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     Optional<Stock> findByCodigoAndSucursal(Long codigo, Long sucursal);
 
-    Optional<Stock> findByCodigo(String codigo);
+    Optional<Stock> findByCodigo(Long codigo);
 }

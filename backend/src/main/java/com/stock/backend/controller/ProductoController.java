@@ -47,13 +47,15 @@ public class ProductoController {
         return ResponseEntity.notFound().build();
     }
 
+    /*
     @PostMapping("")
     public ResponseEntity<ProductoDTO> crearProcducto(@Validated @RequestBody ProductoNuevoDTO producto){
         Producto nuevo = servicio.nuevoProducto(producto.convertir(), producto.sucursal());
         ProductoDTO respuesta = new ProductoDTO(nuevo);
         return ResponseEntity.ok(respuesta);
-    }
+    } */
 
+    /*
     @PutMapping("/codigo/{codigo}")
     public ResponseEntity<ProductoDTO> actualizarProducto (@PathVariable Long codigo,@Validated @RequestBody ProductoNuevoDTO producto){
         Optional<Producto> prod = servicio.buscarPorCodigo(codigo);
@@ -71,5 +73,5 @@ public class ProductoController {
         System.out.println("SE LLAMO AL PROCESO COMPLETO PARA EL CODIGO: " + codigo + " PARA SUCURSAL " + sucursal);
         return ResponseEntity.ok(servicio.productoCompletoPorCodigo(codigo, sucursal));
     }
-
+    */
 }
