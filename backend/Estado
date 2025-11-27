@@ -2,3 +2,9 @@ Se Creo la entidad MovimientoTipo y se creo su controller, su repository y servi
     - funciona pero no tiene DTOs
     - no controlla errores.
     - no interactua con nadie.
+
+
+estube mejorando el movimientotipo respetando los principios solid y demas, pero falta probar que funciones no tiene controller.
+
+se creo la estructura de Exeption pero tambien falta probarlo con algun controller XD faltan muchas cosas.
+

@@ -22,6 +22,14 @@ public class Stock {
         private Double cantidad;
         private Double reserva;
 
+
+        public void  sumar(Double cantidad){
+                this.cantidad = this.cantidad + cantidad;
+        }
+
+        public void  restar(Double cantidad){
+                this.cantidad = this.cantidad + cantidad;
+        }
         public void actualizar(Stock datos){
                 if (datos.getCantidad() != null){
                         this.cantidad = datos.getCantidad();

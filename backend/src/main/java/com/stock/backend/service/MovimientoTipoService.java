@@ -3,7 +3,6 @@ package com.stock.backend.service;
 import com.stock.backend.entity.MovimientoTipo;
 import com.stock.backend.repository.MovimientoTipoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +25,4 @@ public class MovimientoTipoService {
         return respuesta;
     }
 
-    public MovimientoTipo buscarPorSiglas(String siglas) {
-        return repository.findBySiglas(siglas);
-    }
 }
