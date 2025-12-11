@@ -2,6 +2,7 @@ package com.stock.backend.controller;
 
 import com.stock.backend.dto.StockDTO;
 import com.stock.backend.entity.Stock;
+import com.stock.backend.mapper.StockMapper;
 import com.stock.backend.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,14 @@ public class StockController {
 
     @GetMapping("")
     public ResponseEntity<List<StockDTO>> listarStock(){
-        return ResponseEntity.ok(service.consultarTodos().stream().map(StockDTO::new).toList());
+        return ResponseEntity.ok(service.consultarTodos().stream().map(StockMapper::toDto).toList());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<StockDTO> consultarPorId(@PathVariable Long id){
         Optional<Stock> respuesta = service.consultarPorId(id);
         if (respuesta.isPresent()){
-            return ResponseEntity.ok(new StockDTO(respuesta.get()));
+            return ResponseEntity.ok(StockMapper.toDto(respuesta.get()));
         }
         return ResponseEntity.notFound().build();
     }

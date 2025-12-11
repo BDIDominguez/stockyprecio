@@ -8,3 +8,5 @@ estube mejorando el movimientotipo respetando los principios solid y demas, pero
 
 se creo la estructura de Exeption pero tambien falta probarlo con algun controller XD faltan muchas cosas.
 
+se creo StockMapper y se reemplazo en el controller funciona y todo bien
+
