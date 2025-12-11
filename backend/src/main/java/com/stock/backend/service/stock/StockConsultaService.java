@@ -14,7 +14,7 @@ public class StockConsultaService {
 
     public final StockRepository repository;
 
-    public Optional<Stock> consultar(Long codigo){
-        return repository.findByCodigo(codigo);
+    public Optional<Stock> consultar(Long codigo, Long sucursal){
+        return repository.findByCodigoAndSucursal(codigo,sucursal);
     }
 }

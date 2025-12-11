@@ -21,27 +21,6 @@ public record ProductoNuevoDTO (
     @Min(value = 0, message = "Stock mínimo no puede ser negativo")
     Double stockMinimo,
     Boolean manejaStock,
-    Boolean activo,
-    @NotNull(message = "Tiene que tener sucursal si o si.")
-    Long sucursal
-){
-    public ProductoNuevoDTO(Producto producto, Long suc) {
-        this(producto.getCodigo(), producto.getNombre(),
-                producto.getDescripcion(), producto.getCategoria(),
-                producto.getProveedor(), producto.getStockMinimo(),
-                producto.getManejaStock(), producto.getActivo(), suc);
-    }
+    Boolean activo
 
-    public Producto convertir() {
-        return Producto.builder()
-                .codigo(this.codigo)
-                .nombre(this.nombre)
-                .descripcion(this.descripcion)
-                .categoria(this.categoriaId)
-                .proveedor(this.proveedorId)
-                .stockMinimo(this.stockMinimo != null ? this.stockMinimo : 0)
-                .manejaStock(this.manejaStock != null ? this.manejaStock : true)
-                .activo(this.activo != null ? this.activo : true)
-                .build();
-    }
-}
+){}

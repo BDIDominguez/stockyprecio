@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public record ProductoDTO(
+        Long id,
         Long codigo,
         String nombre,
         String descripcion,
@@ -23,20 +24,4 @@ public record ProductoDTO(
         Boolean activo,
         LocalDateTime fechaCreacion,
         LocalDateTime fechaModificacion
-        ) {
-    public ProductoDTO (Producto producto) {
-        this(
-            producto.getCodigo(),
-                producto.getNombre(),
-                producto.getDescripcion(),
-                producto.getCategoria(),
-                producto.getProveedor(),
-                producto.getStockMinimo(),
-                producto.getManejaStock(),
-                producto.getActivo(),
-                producto.getFechaCreacion(),
-                producto.getFechaModificacion()
-        );
-    }
-
-}
+        ) {}

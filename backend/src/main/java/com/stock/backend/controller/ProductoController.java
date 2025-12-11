@@ -1,11 +1,12 @@
 package com.stock.backend.controller;
 
-import com.stock.backend.dto.ProductoCompletoDTO;
 import com.stock.backend.dto.ProductoDTO;
 import com.stock.backend.dto.ProductoNuevoDTO;
 import com.stock.backend.entity.Producto;
-import com.stock.backend.service.ProductoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stock.backend.mapper.ProductoMapper;
+import com.stock.backend.mapper.ProductoNuevoMapper;
+import com.stock.backend.service.producto.ProductoFacadeService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +16,24 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/productos")
+@AllArgsConstructor
 public class ProductoController {
 
-    @Autowired
-    private ProductoService servicio;
+    //private ProductoService servicio;
+    private final ProductoFacadeService servicio;
 
     @GetMapping
     public ResponseEntity<List<ProductoDTO>> listarProductos(){
-        List<Producto> lista = servicio.listarTodos();
-        List<ProductoDTO> dtos = lista.stream().map(ProductoDTO::new).toList();
+        List<Producto> lista = servicio.consultarTodosActivos();
+        List<ProductoDTO> dtos = lista.stream().map(ProductoMapper::toDto).toList();
         return  ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductoDTO> productoPorId(@PathVariable Long id){
-        Optional<Producto> prod = servicio.buscarPorId(id);
+        Optional<Producto> prod = servicio.consultarPorId(id);
         if (prod.isPresent()){
-            ProductoDTO respuesta = new ProductoDTO(prod.get());
+            ProductoDTO respuesta = ProductoMapper.toDto(prod.get());
             return ResponseEntity.ok(respuesta);
         }
         return ResponseEntity.notFound().build();
@@ -39,36 +41,29 @@ public class ProductoController {
 
     @GetMapping("/codigo/{codigo}")
     public ResponseEntity<ProductoDTO> productoPorCodigo(@PathVariable Long codigo){
-        Optional prod = servicio.buscarPorCodigo(codigo);
+        Optional<Producto> prod = servicio.consultarPorCodigo(codigo);
         if (prod.isPresent()){
-            ProductoDTO respuesta = new ProductoDTO((Producto) prod.get());
+            ProductoDTO respuesta = ProductoMapper.toDto(prod.get());
             return ResponseEntity.ok(respuesta);
         }
         return ResponseEntity.notFound().build();
     }
 
     /*
-    @PostMapping("")
+    @PostMapping("") // se necesita crear un orquestador que use tanto StockService y ProdcutoService todabia no existe pero pronto
     public ResponseEntity<ProductoDTO> crearProcducto(@Validated @RequestBody ProductoNuevoDTO producto){
         Producto nuevo = servicio.nuevoProducto(producto.convertir(), producto.sucursal());
         ProductoDTO respuesta = new ProductoDTO(nuevo);
         return ResponseEntity.ok(respuesta);
     } */
 
-    /*
-    @PutMapping("/codigo/{codigo}")
-    public ResponseEntity<ProductoDTO> actualizarProducto (@PathVariable Long codigo,@Validated @RequestBody ProductoNuevoDTO producto){
-        Optional<Producto> prod = servicio.buscarPorCodigo(codigo);
-        if (prod.isPresent()){
-            Producto actual = prod.get();
-            actual.actualizarCampos(producto.convertir());
-            Producto actualizado = servicio.nuevoProducto(actual, producto.sucursal());
-            return ResponseEntity.ok(new ProductoDTO(actualizado));
-        }
-        return ResponseEntity.notFound().build();
+    @PutMapping("/id/{id}")
+    public ResponseEntity<ProductoDTO> actualizarProducto (@PathVariable Long id,@Validated @RequestBody ProductoNuevoDTO producto){
+        Producto respuesta = servicio.actualizar(id, ProductoNuevoMapper.toEntidad(producto));
+        return ResponseEntity.ok(ProductoMapper.toDto(respuesta));
     }
-
-    @GetMapping("/completo/{codigo}/sucursal/{sucursal}")
+    /*
+    @GetMapping("/completo/{codigo}/sucursal/{sucursal}")  // Esto Pertenece a otro lado no aqui
     public ResponseEntity<ProductoCompletoDTO> productoCompleto(@PathVariable Long codigo, @PathVariable Long sucursal){
         System.out.println("SE LLAMO AL PROCESO COMPLETO PARA EL CODIGO: " + codigo + " PARA SUCURSAL " + sucursal);
         return ResponseEntity.ok(servicio.productoCompletoPorCodigo(codigo, sucursal));

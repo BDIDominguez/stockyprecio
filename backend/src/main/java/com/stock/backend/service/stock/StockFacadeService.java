@@ -8,14 +8,14 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class StockOrquestadorService {
+public class StockFacadeService {
 
     private final StockConsultaService consultaService;
     private final StockModificarService modificarService;
     private final StockCrearService crearService;
 
-    public Optional<Stock> consultar(Long codigo){
-        return consultaService.consultar(codigo);
+    public Optional<Stock> consultar(Long codigo, Long sucursal){
+        return consultaService.consultar(codigo,sucursal);
     }
 
     public Stock sumar(Double cantidad, Long sucursal, Long codigo){

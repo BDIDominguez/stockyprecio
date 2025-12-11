@@ -1,15 +1,7 @@
 package com.stock.backend.service;
 
-import com.stock.backend.dto.ProductoCompletoDTO;
-import com.stock.backend.entity.Categoria;
 import com.stock.backend.entity.Producto;
-import com.stock.backend.entity.Proveedor;
-import com.stock.backend.entity.Stock;
-import com.stock.backend.repository.CategoriaRespository;
 import com.stock.backend.repository.ProductoRepository;
-import com.stock.backend.repository.ProveedorRepository;
-import com.stock.backend.repository.StockRepository;
-import com.stock.backend.service.stock.StockOrquestadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +23,7 @@ public class ProductoService {
     @Autowired
     private CategoriaService categorias;
 
-    /*
+    /* este nunca debe llamar al service ProductoNUevoService debo de crear un orquestador que use stock y producto!! por temas de diseño correcto.
     public Producto nuevoProducto(Producto producto, Long sucursal) {
         // se crea el nuevo stock, ya que al ser un nuevo producto no existe para el mismo ese Stock  pero por las dudas consultamos que el mismo no exista.
         Stock existe = stocks.  buscarPorCodigoySucursal(producto.getCodigo(), sucursal);
