@@ -1,4 +1,4 @@
-package com.stock.backend.service.tipomovimiento;
+package com.stock.backend.service.movimientotipo;
 
 import com.stock.backend.entity.MovimientoTipo;
 import com.stock.backend.repository.MovimientoTipoRepository;

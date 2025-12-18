@@ -17,19 +17,5 @@ public record ProductoCompletoDTO(Long codigo,
                                   Boolean activo,
                                   LocalDateTime fechaCreacion,
                                   LocalDateTime fechaModificacion
-) {
-    public ProductoCompletoDTO(Producto producto, Categoria cat, Proveedor prov, Stock st) {
-        this(
-                producto.getCodigo(),
-                producto.getNombre(),
-                producto.getDescripcion(),
-                cat,
-                prov,
-                st,
-                producto.getManejaStock(),
-                producto.getActivo(),
-                producto.getFechaCreacion(),
-                producto.getFechaModificacion()
-        );
-    }
-}
+) { }
+

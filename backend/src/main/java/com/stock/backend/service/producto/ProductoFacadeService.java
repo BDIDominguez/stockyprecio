@@ -38,6 +38,6 @@ public class ProductoFacadeService {
     }
 
     public Producto actualizar(Long id, Producto modificacion){
-        return productoModificar.actualizar(modificacion);
+        return productoModificar.actualizar(id, modificacion);
     }
 }

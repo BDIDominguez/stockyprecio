@@ -1,4 +1,4 @@
-package com.stock.backend.service.tipomovimiento;
+package com.stock.backend.service.movimientotipo;
 
 import com.stock.backend.entity.MovimientoTipo;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class MovimientoTipoOrquestadorService {
+public class MovimientoTipoFacadeService {
     private final MovimientoTipoConsultaPorSiglasService consultaPorSiglasService;
     private final MovimientoTipoConsultaTodosService consultaTodosService;
     private final MovimientoTipoNuevoServicio nuevoServicio;

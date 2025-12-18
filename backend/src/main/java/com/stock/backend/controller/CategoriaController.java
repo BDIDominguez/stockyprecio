@@ -1,60 +1,64 @@
 package com.stock.backend.controller;
 
+import com.stock.backend.dto.CategoriaDTO;
+import com.stock.backend.dto.CategoriaNuevaDTO;
 import com.stock.backend.entity.Categoria;
-import com.stock.backend.service.CategoriaService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.stock.backend.exception.RecursoNoEncontradoException;
+import com.stock.backend.mapper.CategoriaMapper;
+import com.stock.backend.mapper.CategoriaNuevaMapper;
+import com.stock.backend.service.categoria.CategoriaFacadeService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/categorias")
+@AllArgsConstructor
 public class CategoriaController {
 
-    @Autowired
-    private CategoriaService service;
+    private final CategoriaFacadeService service;
 
     @GetMapping("")
-    public ResponseEntity<List<Categoria>> consultarCategorias(){
-        List<Categoria> lista = service.consultaTodos();
+    public ResponseEntity<List<CategoriaDTO>> consultarCategorias(){
+        List<CategoriaDTO> lista = service.consultarTodos().stream().map(CategoriaMapper::toDto).toList();
+        return ResponseEntity.ok(lista);
+    }
+    @GetMapping("/activos")
+    public ResponseEntity<List<CategoriaDTO>> consultarCategoriasActivas(){
+        List<CategoriaDTO> lista = service.consultarTodosActivos().stream().map(CategoriaMapper::toDto).toList();
+        return ResponseEntity.ok(lista);
+    }
+    @GetMapping("/inactivos")
+    public ResponseEntity<List<CategoriaDTO>> consultarCategoriasInactivas(){
+        List<CategoriaDTO> lista = service.consultarTodosInactivos().stream().map(CategoriaMapper::toDto).toList();
         return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/nombre/{nombre}")
-    public ResponseEntity<Categoria> consultarCategoriaPorNombre(@PathVariable String nombre){
-        Categoria categoria = service.consultarPorNombre(nombre);
+    public ResponseEntity<CategoriaDTO> consultarCategoriaPorNombre(@PathVariable String nombre){
+        CategoriaDTO categoria = CategoriaMapper.toDto(service.buscarPorNombre(nombre).
+                orElseThrow(() -> new RecursoNoEncontradoException("no se encontro una categoria con el nombre: " + nombre)));
         return ResponseEntity.ok(categoria);
     }
 
     @PostMapping("")
-    public ResponseEntity<Categoria> crearCategoria(@RequestBody Categoria categoria){
-        Categoria respuesta = service.crearCategoria(categoria);
-        return ResponseEntity.ok(respuesta);
+    public ResponseEntity<CategoriaDTO> crearCategoria(@Validated @RequestBody CategoriaNuevaDTO categoria){
+        Categoria respuesta = service.crear(CategoriaNuevaMapper.toEntidad(categoria));
+        return ResponseEntity.ok(CategoriaMapper.toDto(respuesta));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> modificarCategoria(@PathVariable Long id, @RequestBody Categoria categoria){
-        Optional<Categoria> existe = service.consultarPorId(id);
-        if (existe.isPresent()){
-            Categoria actual = existe.get();
-            actual.actualizar(categoria);
-            Categoria respuesta = service.modificarCategoria(actual);
-            return ResponseEntity.ok(respuesta);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<CategoriaDTO> modificarCategoria(@PathVariable Long id, @RequestBody Categoria categoria){
+        Categoria existe = service.modificar(categoria,id);
+        return ResponseEntity.ok(CategoriaMapper.toDto(existe));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Categoria> eliminarCategoria(@PathVariable Long id){
-        Optional<Categoria> existe = service.consultarPorId(id);
-        if (existe.isPresent()){
-            Categoria actual = existe.get();
-            actual.setActivo(false);
-            Categoria respuesta = service.modificarCategoria(actual);
-            return ResponseEntity.ok(respuesta);
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<CategoriaDTO> eliminarCategoria(@PathVariable Long id){
+        Categoria respuesta = service.eliminar(id);
+        return ResponseEntity.ok(CategoriaMapper.toDto(respuesta));
     }
 }

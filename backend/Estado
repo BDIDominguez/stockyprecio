@@ -8,5 +8,14 @@ estube mejorando el movimientotipo respetando los principios solid y demas, pero
 
 se creo la estructura de Exeption pero tambien falta probarlo con algun controller XD faltan muchas cosas.
 
-se creo StockMapper y se reemplazo en el controller funciona y todo bien
+se creo StockMapper y se reemplazo en el controller funciona y todo bien.
 
+hoy 17/12/25 se actualizaron DTOs se creo tema de exepciones y se dejo la estructura se actualizara los ya creados a la
+nueva estructura. que respete SOLID por lo menos.
+
+    - Categoria         --- Listo
+    - MovimientoTipo    --- Listo
+    - Producto          ---
+    - Proveedor
+    - Stock
+    - Sucursal

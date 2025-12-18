@@ -1,8 +1,7 @@
 package com.stock.backend.controller;
 
 import com.stock.backend.entity.MovimientoTipo;
-import com.stock.backend.service.MovimientoTipoService;
-import com.stock.backend.service.tipomovimiento.MovimientoTipoOrquestadorService;
+import com.stock.backend.service.movimientotipo.MovimientoTipoFacadeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MovimientoTipoController {
 
-    private final MovimientoTipoOrquestadorService service;
+    private final MovimientoTipoFacadeService service;
 
     @GetMapping
     public ResponseEntity<List<MovimientoTipo>> listarMovimientos(){

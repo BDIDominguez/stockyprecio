@@ -2,6 +2,7 @@ package com.stock.backend.service;
 
 import com.stock.backend.entity.Producto;
 import com.stock.backend.repository.ProductoRepository;
+import com.stock.backend.service.categoria.CategoriaFacadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,6 @@ public class ProductoService {
     @Autowired
     private ProveedorService proveedores;
 
-    @Autowired
-    private CategoriaService categorias;
 
     /* este nunca debe llamar al service ProductoNUevoService debo de crear un orquestador que use stock y producto!! por temas de diseño correcto.
     public Producto nuevoProducto(Producto producto, Long sucursal) {
