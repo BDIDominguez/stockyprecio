@@ -2,8 +2,6 @@ package com.stock.backend.mapper;
 
 import com.stock.backend.dto.ProductoNuevoDTO;
 import com.stock.backend.entity.Producto;
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDateTime;
 
 public class ProductoNuevoMapper {

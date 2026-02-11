@@ -1,6 +1,5 @@
 package com.stock.backend.service;
 
-import com.stock.backend.dto.StockDTO;
 import com.stock.backend.entity.Stock;
 import com.stock.backend.repository.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;

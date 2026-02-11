@@ -1,6 +1,5 @@
 package com.stock.backend.dto;
 
-import com.stock.backend.entity.Producto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

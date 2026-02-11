@@ -2,7 +2,6 @@ package com.stock.backend.service;
 
 import com.stock.backend.entity.Producto;
 import com.stock.backend.repository.ProductoRepository;
-import com.stock.backend.service.categoria.CategoriaFacadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

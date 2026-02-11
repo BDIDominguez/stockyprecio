@@ -1,6 +1,5 @@
 package com.stock.backend.service;
 
-import com.stock.backend.dto.SucursalDTO;
 import com.stock.backend.entity.Sucursal;
 import com.stock.backend.repository.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
