@@ -29,6 +29,7 @@ public class Proveedor {
     @Column(length = 500)
     private String direccion;
     // Estado
+    @Builder.Default
     @Column(nullable = false)
     private Boolean activo = true;
 

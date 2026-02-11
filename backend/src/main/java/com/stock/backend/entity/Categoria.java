@@ -23,6 +23,7 @@ public class Categoria {
     @Column(nullable = false, length = 100)
     private String nombre;
     private String descripcion;
+    @Builder.Default
     private Boolean activo = true;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;

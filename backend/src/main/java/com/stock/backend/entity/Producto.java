@@ -24,8 +24,11 @@ public class Producto {
     private String descripcion;
     private Long categoria;
     private Long proveedor;
+    @Builder.Default
     private Double stockMinimo = 0.00;
+    @Builder.Default
     private Boolean manejaStock = true;
+    @Builder.Default
     private Boolean activo = true;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
