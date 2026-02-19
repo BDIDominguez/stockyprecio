@@ -17,7 +17,8 @@ public class ProductoMapper {
                 prod.getManejaStock(),
                 prod.getActivo(),
                 prod.getFechaCreacion(),
-                prod.getFechaModificacion());
+                prod.getFechaModificacion(),
+                prod.getTipoIva());
     }
 
     public static Producto toEntidad(ProductoDTO prod){
@@ -32,6 +33,7 @@ public class ProductoMapper {
                 prod.manejaStock(),
                 prod.activo(),
                 prod.fechaCreacion(),
-                prod.fechaModificacion());
+                prod.fechaModificacion(),
+                prod.tipoIva());
     }
 }

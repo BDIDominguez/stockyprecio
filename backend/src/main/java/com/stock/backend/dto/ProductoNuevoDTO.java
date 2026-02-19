@@ -20,6 +20,5 @@ public record ProductoNuevoDTO (
     @Min(value = 0, message = "Stock mínimo no puede ser negativo")
     Double stockMinimo,
     Boolean manejaStock,
-    Boolean activo
-
-){}
+    Boolean activo,
+    Long tipoIva){}

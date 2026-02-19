@@ -13,5 +13,6 @@ public record ProductoDTO(
         Boolean manejaStock ,
         Boolean activo,
         LocalDateTime fechaCreacion,
-        LocalDateTime fechaModificacion
+        LocalDateTime fechaModificacion,
+        Long tipoIva
         ) {}

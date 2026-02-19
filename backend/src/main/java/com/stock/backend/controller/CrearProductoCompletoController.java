@@ -1,11 +1,12 @@
 package com.stock.backend.controller;
 
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.backend.dto.ProductoCompletoDTO;
+import com.stock.backend.entity.Producto;
 import com.stock.backend.service.casodeuso.CrearProductoCompleto;
 
 import lombok.AllArgsConstructor;
@@ -17,10 +18,10 @@ public class CrearProductoCompletoController {
 
     private final CrearProductoCompleto servicio;
 
-    @PutMapping("/nuevo/{nuevo}")
-    public ProductoCompletoDTO crear(@RequestBody ProductoCompletoDTO nuevo){
+    @PostMapping("/nuevo")
+    public ProductoCompletoDTO crear(@RequestBody Producto nuevo){
         
-        return null;
+        return servicio.crear(nuevo, 1L);
     }
 
     

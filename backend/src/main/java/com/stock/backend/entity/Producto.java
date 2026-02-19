@@ -32,6 +32,7 @@ public class Producto {
     private Boolean activo = true;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
+    private Long tipoIva;
 
     @PrePersist
     public void prePersist(){
