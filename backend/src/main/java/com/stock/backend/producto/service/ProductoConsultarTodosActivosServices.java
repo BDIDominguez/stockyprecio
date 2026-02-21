@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductoConsultarTodosActivosServices {
     private final ProductoRepository repository;
 
-    public List<Producto> consultarTodos(){
+    public List<Producto> consultarTodosActivos(){
         return repository.findAllByActivoTrue();
     }
 }

@@ -10,15 +10,20 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class ProductoFacadeService {
-    private ProductoConsultarTodosActivosServices productoConsultarTodos;
+    private ProductoConsultarTodosActivosServices productoConsultarTodosActivos;
     private ProductoConsultarTodosInactivosServices productoConsultarTodosInactivos;
     private ProductoConsultarPorIdService productoConsultarPorId;
     private ProductoConsultaPorCodigoService productoConsultaPorCodigo;
     private ProductoCrearService productoCrear;
     private ProductoModificarService productoModificar;
+    private ProductoConsultarTodosServices productoConsultarTodos;
+
+    public List<Producto> consultarTodos(){
+        return productoConsultarTodos.consultarTodos();
+    }
 
     public List<Producto> consultarTodosActivos(){
-        return productoConsultarTodos.consultarTodos();
+        return productoConsultarTodosActivos.consultarTodosActivos();
     }
 
     public List<Producto> consultarTodosInactivos(){
