@@ -10,10 +10,6 @@ public record CategoriaNuevaDTO(
         Long codigo,
         @NotBlank(message = "Nombre es obligarorio.")
         String nombre,
-        String descripcion,
-        @NotNull(message = "El estado es necesario.")
-        Boolean activo,
-        LocalDateTime fechaCreacion,
-        LocalDateTime fechaModificacion
+        String descripcion
 ){
 }

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class CategoriaModificarService {
-    private static CategoriaRespository respository;
+    private final CategoriaRespository respository;
 
-    public Categoria modificar(Categoria datos, Long id){
-        Categoria existe = respository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No existe producto con ID: " + datos.getId()));
+    public Categoria modificar(Categoria datos, Long codigo){
+        Categoria existe = respository.findByCodigo(codigo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe producto con Codigo: " + datos.getCodigo()));
         existe.actualizar(datos);
         return respository.save(existe);
     }

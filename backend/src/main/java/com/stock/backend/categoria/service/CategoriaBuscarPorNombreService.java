@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CategoriaBuscarPorNombreService {
-    private static CategoriaRespository repository;
+    private final CategoriaRespository repository;
 
     public Optional<Categoria> consultar(String nombre){
         return repository.findByNombre(nombre);

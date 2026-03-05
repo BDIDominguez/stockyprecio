@@ -2,6 +2,7 @@ package com.stock.backend.categoria.service;
 
 import com.stock.backend.categoria.entity.Categoria;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,37 +12,32 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CategoriaFacadeService {
     private final CategoriaBuscarPorNombreService categoriaBuscarPorNombre;
-    private final CategoriaConsultarTodosActivosService categoriaConsultarTodosActivos;
-    private final CategoriaConsultarTodosInactivosService categoriaConsultarTodosInactivos;
     private final CategoriaConsultarTodosService categoriaConsultarTodos;
     private final CategoriaCrearService categoriaCrear;
     private final CategoriaModificarService categoriaModificar;
-    private final CategoriaEliminarService categoriaEliminar;
+    private final CategoriaDesactivarService categoriaEliminar;
     private final CategoriaBuscarPorIdService categoriaBuscarPorId;
+    private final CategoriaBuscarPorCodigoService categoriaBuscarPorCodigo;
 
     public Optional<Categoria> buscarPorNombre(String nombre){
         return categoriaBuscarPorNombre.consultar(nombre);
     }
-
-    public List<Categoria> consultarTodosActivos(){
-        return categoriaConsultarTodosActivos.consultar();
-    }
-    public List<Categoria> consultarTodosInactivos() {
-        return  categoriaConsultarTodosInactivos.consultar();
-    }
-    public List<Categoria> consultarTodos(){
-        return categoriaConsultarTodos.consultar();
+    public Page<Categoria> consultarTodos(Boolean activo, int pagina, int tamaño, String ordenarPor){
+        return categoriaConsultarTodos.consultar(activo, pagina, tamaño, ordenarPor);
     }
     public Categoria crear(Categoria datos){
         return categoriaCrear.crear(datos);
     }
-    public Categoria modificar(Categoria datos, Long id){
-        return categoriaModificar.modificar(datos, id);
+    public Categoria modificar(Categoria datos, Long codigo){
+        return categoriaModificar.modificar(datos, codigo);
     }
-    public Categoria eliminar(Long id){
-        return categoriaEliminar.eliminar(id);
+    public Categoria desactivarPorCodigo(Long codigo){
+        return categoriaEliminar.desactivarPorCodigo(codigo);
     }
     public Optional<Categoria> consultarPorId(Long categoria) {
         return categoriaBuscarPorId.buscar(categoria);
+    }
+    public Optional<Categoria> buscarPorCodigo(Long codigo) {
+        return categoriaBuscarPorCodigo.buscarPorCodigo(codigo);
     }
 }

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class CategoriaEliminarService {
+public class CategoriaDesactivarService {
     private final CategoriaRespository respository;
-    public Categoria eliminar(Long id){
-        Categoria existe = respository.findById(id).orElseThrow(()-> new RecursoNoEncontradoException("No existe una Categoria con ese ID: " + id));
+    public Categoria desactivarPorCodigo(Long codigo){
+        Categoria existe = respository.findByCodigo(codigo).orElseThrow(()-> new RecursoNoEncontradoException("No existe una Categoria con ese Codigo: " + codigo));
         existe.setActivo(false);
         return respository.save(existe);
     }

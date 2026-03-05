@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class CategoriaCrearService {
-    private static CategoriaRespository respository;
+    private final CategoriaRespository respository;
 
     public Categoria crear(Categoria datos){
         respository.findByCodigo(datos.getCodigo()).ifPresent(c -> {

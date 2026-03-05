@@ -5,14 +5,14 @@ import com.stock.backend.categoria.repository.CategoriaRespository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class CategoriaConsultarTodosActivosService {
+public class CategoriaBuscarPorCodigoService {
     private final CategoriaRespository respository;
 
-    public List<Categoria> consultar(){
-        return respository.findAllByActivoTrue();
+    public Optional<Categoria> buscarPorCodigo(Long codigo){
+        return respository.findByCodigo(codigo);
     }
 }
