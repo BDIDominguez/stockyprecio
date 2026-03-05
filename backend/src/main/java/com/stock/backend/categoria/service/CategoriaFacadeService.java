@@ -3,6 +3,7 @@ package com.stock.backend.categoria.service;
 import com.stock.backend.categoria.entity.Categoria;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +23,8 @@ public class CategoriaFacadeService {
     public Optional<Categoria> buscarPorNombre(String nombre){
         return categoriaBuscarPorNombre.consultar(nombre);
     }
-    public Page<Categoria> consultarTodos(Boolean activo, int pagina, int tamaño, String ordenarPor){
-        return categoriaConsultarTodos.consultar(activo, pagina, tamaño, ordenarPor);
+    public Page<Categoria> consultarTodos(Boolean activo, int page, int size, String sort){
+        return categoriaConsultarTodos.consultar(activo, page, size, sort);
     }
     public Categoria crear(Categoria datos){
         return categoriaCrear.crear(datos);
@@ -39,5 +40,11 @@ public class CategoriaFacadeService {
     }
     public Optional<Categoria> buscarPorCodigo(Long codigo) {
         return categoriaBuscarPorCodigo.buscarPorCodigo(codigo);
+    }
+    public Categoria activarPorCodigo(Long codigo) {
+        return categoriaEliminar.activarPorCodigo(codigo);
+    }
+    public Page<Categoria> buscarPorNombreIgnoreCase(String nombre, Pageable pageable) {
+        return categoriaBuscarPorNombre.buscarIgnoreCase(nombre, pageable);
     }
 }

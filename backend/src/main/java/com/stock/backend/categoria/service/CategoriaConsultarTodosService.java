@@ -16,8 +16,8 @@ import java.util.List;
 public class CategoriaConsultarTodosService {
     private final CategoriaRespository respository;
 
-    public Page<Categoria> consultar(Boolean activo, int pagina, int tamaño, String ordenarPor){
-        Pageable pageable = PageRequest.of(pagina,tamaño, Sort.by(ordenarPor).ascending());
+    public Page<Categoria> consultar(Boolean activo, int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
         return respository.findByActivo(activo, pageable);
     }
 

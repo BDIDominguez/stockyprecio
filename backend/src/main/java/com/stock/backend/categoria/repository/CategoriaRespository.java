@@ -14,4 +14,5 @@ public interface CategoriaRespository extends JpaRepository<Categoria, Long> {
     Optional<Categoria> findByNombre(String nombre);
     Optional<Categoria> findByCodigo(Long codigo);
     Page<Categoria> findByActivo(Boolean activo, Pageable pageable);
+    Page<Categoria> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
 }

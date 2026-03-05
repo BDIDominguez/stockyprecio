@@ -6,7 +6,6 @@ public record CategoriaDTO(
         Long codigo,
         String nombre,
         String descripcion,
-        Boolean activo,
         LocalDateTime fechaCreacion,
         LocalDateTime fechaModificacion
 ){
