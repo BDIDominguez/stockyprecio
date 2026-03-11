@@ -44,7 +44,7 @@ public class CategoriaFacadeService {
     public Categoria activarPorCodigo(Long codigo) {
         return categoriaEliminar.activarPorCodigo(codigo);
     }
-    public Page<Categoria> buscarPorNombreIgnoreCase(String nombre, Pageable pageable) {
-        return categoriaBuscarPorNombre.buscarIgnoreCase(nombre, pageable);
+    public Page<Categoria> buscarPorNombreIgnoreCase(String nombre, int page, int size, String sort) {
+        return categoriaBuscarPorNombre.buscarIgnoreCase(nombre, page, size, sort);
     }
 }
