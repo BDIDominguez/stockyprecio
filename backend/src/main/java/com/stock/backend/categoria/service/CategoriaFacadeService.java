@@ -47,4 +47,7 @@ public class CategoriaFacadeService {
     public Page<Categoria> buscarPorNombreIgnoreCase(String nombre, int page, int size, String sort) {
         return categoriaBuscarPorNombre.buscarIgnoreCase(nombre, page, size, sort);
     }
+    public Long siguienteCodigo(){
+        return categoriaConsultarTodos.siguienteCodigo();
+    }
 }

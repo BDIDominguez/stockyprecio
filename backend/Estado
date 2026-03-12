@@ -22,4 +22,12 @@ nueva estructura. que respete SOLID por lo menos.
 
 luego de muchas revisiones y cambios se termino cambiando todo XD regreso a Categoria y vamos a corregir los errores de diseño y logica y dejarlo realmente
 funcional. 05/03/2026
+por fin se dejo Categoria funcional con los siquientes endpoint:
+PUT     /api/categorias/{codigo}
+DELETE  /api/categorias/{codigo}
+GET     /api/categorias
+POST    /api/categorias
+PATCH   /api/categorias/{codigo}/activar
+GET     /api/categorias/siguiente-codigo
+GET     /api/categorias/codigo/{codigo}
 

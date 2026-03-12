@@ -21,4 +21,11 @@ public class CategoriaConsultarTodosService {
         return respository.findByActivo(activo, pageable);
     }
 
+    public Long siguienteCodigo(){
+        Categoria categoria = respository.findTopByOrderByCodigoDesc();
+        Long respuesta = categoria.getCodigo() + 1;
+        System.out.println("respuesta: "+respuesta);
+        return respuesta;
+    }
+
 }

@@ -7,12 +7,16 @@ import com.stock.backend.common.exception.RecursoNoEncontradoException;
 import com.stock.backend.categoria.mapper.CategoriaMapper;
 import com.stock.backend.categoria.mapper.CategoriaNuevaMapper;
 import com.stock.backend.categoria.service.CategoriaFacadeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +33,45 @@ public class CategoriaController {
     private final CategoriaMapper categoriaMapper;
     private final CategoriaNuevaMapper categoriaNuevaMapper;
 
+    @Operation(
+            summary = "Obtener siguiente código disponible",
+            description = "Calcula el siguiente código sugerido para una nueva categoría. " +
+                    "Este valor se obtiene a partir del código máximo registrado en el sistema. " +
+                    "El valor devuelto es solo una sugerencia para facilitar la carga de datos " +
+                    "desde el frontend y puede ser modificado por el usuario antes de guardar."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Código sugerido obtenido correctamente",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(type = "integer", example = "1102")
+                    )
+            )
+    })
+    @GetMapping("/siguiente-codigo")
+    public Long siguienteCodigo(){
+        return service.siguienteCodigo();
+    }
+
+    @Operation(
+            summary = "Consultar categorías",
+            description = "Devuelve una lista paginada de categorías. " +
+                    "Puede filtrar por nombre (búsqueda parcial) y por estado activo. " +
+                    "Si se envía el parámetro 'nombre', se realizará una búsqueda por coincidencia " +
+                    "en el nombre de la categoría ignorando mayúsculas/minúsculas."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de categorías obtenida correctamente"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Parámetros de búsqueda inválidos"
+            )
+    })
     @GetMapping("")
     public ResponseEntity<Page<CategoriaDTO>> consultarCategorias(
             @RequestParam(required = false) @Size(min = 2, message = "debe ingresar al menos 2 caracteres") String nombre,

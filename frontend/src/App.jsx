@@ -1,13 +1,7 @@
-import './App.css'
-import CategoriasPage from './features/categorias/CategoriasPage'
+import CategoriasPage from "./pages/CategoriasPage";
 
 function App() {
-  return (
-    <div>
-      <h1>Sistema ERP</h1>
-      <CategoriasPage />
-    </div>
-  )
+  return <CategoriasPage />;
 }
 
-export default App
+export default App;
