@@ -18,4 +18,5 @@ public interface SucursalRepository extends JpaRepository<Sucursal, Long> {
     Page<Sucursal> findByNombreContainingIgnoreCase(@Size(min = 2, message = "debe ingresar al menos 2 caracteres") String nombre, Pageable pageable);
 
     Page<Sucursal> findByActivo(Boolean activo, Pageable pageable);
+
 }

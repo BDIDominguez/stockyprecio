@@ -1,9 +1,11 @@
 package com.stock.backend.sucursal.controller;
 
 import com.stock.backend.sucursal.dto.SucursalDTO;
+import com.stock.backend.sucursal.dto.SucursalNuevaDTO;
 import com.stock.backend.sucursal.entity.Sucursal;
 import com.stock.backend.sucursal.mapper.SucursalMapper;
 import com.stock.backend.sucursal.service.SucursalService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,12 @@ public class SucursalController {
 
     private final SucursalService service;
     private final SucursalMapper mapper;
+
+    @PostMapping("")
+    public ResponseEntity<SucursalDTO> crearSucursal(@RequestBody @Valid SucursalNuevaDTO dto){
+        Sucursal sucursal = service.crearSucursal(dto);
+        return ResponseEntity.ok(mapper.toDto(sucursal));
+    }
 
     @GetMapping("")
     public ResponseEntity<Page<SucursalDTO>> consultar(
@@ -47,5 +55,17 @@ public class SucursalController {
             return ResponseEntity.ok(mapper.toDto(respuesta.get()));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<Void> desactivarSucursal(@PathVariable long codigo){
+        service.desactivarPorCodigo(codigo);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{codigo}/activar")
+    public ResponseEntity<Void> activarSucursal(@PathVariable long codigo){
+        service.activarPorCodigo(codigo);
+        return ResponseEntity.noContent().build();
     }
 }
