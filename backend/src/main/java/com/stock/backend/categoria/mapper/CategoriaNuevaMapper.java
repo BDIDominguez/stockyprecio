@@ -10,6 +10,6 @@ public interface CategoriaNuevaMapper {
 
     Categoria toEntidad(CategoriaNuevaDTO cat);
 
-    CategoriaNuevaDTO toDTO(Categoria dto);
+    CategoriaNuevaDTO toDto(Categoria dto);
 
 }

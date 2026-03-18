@@ -1,5 +1,6 @@
 package com.stock.backend.application.crearProductoCompleto.service;
 
+import com.stock.backend.categoria.service.CategoriaService;
 import com.stock.backend.producto.dto.ProductoCompletoDTO;
 import com.stock.backend.categoria.entity.Categoria;
 import com.stock.backend.producto.entity.Producto;
@@ -7,7 +8,7 @@ import com.stock.backend.proveedor.entity.Proveedor;
 import com.stock.backend.stock.entity.Stock;
 import com.stock.backend.producto.mapper.ProductoCompletoMapper;
 import com.stock.backend.proveedor.service.ProveedorService;
-import com.stock.backend.categoria.service.CategoriaFacadeService;
+
 import com.stock.backend.producto.service.ProductoFacadeService;
 import com.stock.backend.stock.service.StockFacadeService;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class CrearProductoCompleto {
     private final ProductoFacadeService productoService;
     private final StockFacadeService stockService;
-    private final CategoriaFacadeService categoriaService;
+    private final CategoriaService categoriaService;
     private final ProveedorService proveedorService;
 
     public ProductoCompletoDTO crear(Producto producto, Long sucursal){

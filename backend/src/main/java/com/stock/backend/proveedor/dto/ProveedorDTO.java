@@ -5,8 +5,6 @@ import jakarta.validation.constraints.*;
 
 public record ProveedorDTO(
 
-        Long id,
-
         @NotNull(message = "El Codigo es obligatorio")
         @Size(message = "El código no puede superar 50 caracteres")
         Long codigo,
@@ -29,39 +27,4 @@ public record ProveedorDTO(
         String direccion,
 
         Boolean activo
-) {
-
-    // Constructor vacío (simulado)
-    public ProveedorDTO() {
-        this(null, null, null, null, null, null, null, true);
-    }
-
-    // Conversión de Entidad → DTO
-    public static ProveedorDTO fromEntity(Proveedor proveedor) {
-        if (proveedor == null) return null;
-        return new ProveedorDTO(
-                proveedor.getId(),
-                proveedor.getCodigo(),
-                proveedor.getNombre(),
-                proveedor.getContacto(),
-                proveedor.getTelefono(),
-                proveedor.getEmail(),
-                proveedor.getDireccion(),
-                proveedor.getActivo()
-        );
-    }
-
-    // Conversión de DTO → Entidad
-    public Proveedor toEntity() {
-        return Proveedor.builder()
-                .id(this.id)
-                .codigo(this.codigo)
-                .nombre(this.nombre)
-                .contacto(this.contacto)
-                .telefono(this.telefono)
-                .email(this.email)
-                .direccion(this.direccion)
-                .activo(this.activo != null ? this.activo : true)
-                .build();
-    }
-}
+){}

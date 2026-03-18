@@ -2,13 +2,11 @@ package com.stock.backend.stock.mapper;
 
 import com.stock.backend.stock.dto.StockDTO;
 import com.stock.backend.stock.entity.Stock;
+import org.mapstruct.Mapper;
 
-public class StockMapper {
-    public static StockDTO toDto(Stock origen){
-        return new StockDTO(origen.getId(), origen.getCodigo(), origen.getSucursal(), origen.getCantidad(), origen.getReserva());
-    }
+@Mapper(componentModel = "spring")
+public interface StockMapper {
+    StockDTO toDto(Stock origen);
 
-    public static  Stock toEntity(StockDTO origen){
-        return new Stock(origen.id(), origen.codigo(), origen.sucursal(), origen.cantidad(), origen.reserva());
-    }
+    Stock toEntity(StockDTO origen);
 }

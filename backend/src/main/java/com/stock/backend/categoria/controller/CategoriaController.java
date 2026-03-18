@@ -6,7 +6,7 @@ import com.stock.backend.categoria.entity.Categoria;
 import com.stock.backend.common.exception.RecursoNoEncontradoException;
 import com.stock.backend.categoria.mapper.CategoriaMapper;
 import com.stock.backend.categoria.mapper.CategoriaNuevaMapper;
-import com.stock.backend.categoria.service.CategoriaFacadeService;
+import com.stock.backend.categoria.service.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class CategoriaController {
 
-    private final CategoriaFacadeService service;
+    private final CategoriaService service;
     private final CategoriaMapper categoriaMapper;
     private final CategoriaNuevaMapper categoriaNuevaMapper;
 
@@ -83,7 +83,7 @@ public class CategoriaController {
         Page<CategoriaDTO> resultado;
 
         if (nombre != null) {
-            resultado = service.buscarPorNombreIgnoreCase(nombre, page, size, sort)
+            resultado = service.buscarPorNombreIgnoreCase(nombre, activo, page, size, sort)
                     .map(categoriaMapper::toDto);
         } else {
             resultado = service.consultarTodos(activo, page, size, sort)
@@ -107,20 +107,22 @@ public class CategoriaController {
     }
 
     @PutMapping("/{codigo}")
-    public ResponseEntity<CategoriaDTO> modificarCategoria(@PathVariable Long codigo, @RequestBody CategoriaDTO categoria){
-        Categoria existe = service.modificar(categoriaMapper.toEntidad(categoria),codigo);
+    public ResponseEntity<CategoriaDTO> modificarCategoria(
+            @PathVariable @Positive Long codigo,
+            @Valid @RequestBody CategoriaDTO categoria) {
+        Categoria existe = service.modificar(categoriaMapper.toEntidad(categoria), codigo);
         return ResponseEntity.ok(categoriaMapper.toDto(existe));
     }
 
     @DeleteMapping("/{codigo}")
-    public ResponseEntity<Void> desactivarCategoria(@PathVariable Long codigo){
+    public ResponseEntity<Void> desactivarCategoria(@PathVariable @Positive Long codigo){
         //Categoria respuesta = service.desactivarPorCodigo(codigo);
         service.desactivarPorCodigo(codigo);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{codigo}/activar")
-    public ResponseEntity<Void> activarCategoria(@PathVariable Long codigo){
+    public ResponseEntity<Void> activarCategoria(@PathVariable @Positive Long codigo){
         //Categoria respuesta = service.activarPorCodigo(codigo);
         service.activarPorCodigo(codigo);
         return ResponseEntity.noContent().build();

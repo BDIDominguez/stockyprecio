@@ -1,38 +1,32 @@
 package com.stock.backend.stock.controller;
 
+import com.stock.backend.common.exception.RecursoNoEncontradoException;
 import com.stock.backend.stock.dto.StockDTO;
 import com.stock.backend.stock.entity.Stock;
 import com.stock.backend.stock.mapper.StockMapper;
 import com.stock.backend.stock.service.StockService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stock")
+@AllArgsConstructor
 public class StockController {
 
-    @Autowired
-    private StockService service;
+
+    private final StockService service;
+    private final StockMapper mapper;
 
     @GetMapping("")
-    public ResponseEntity<List<StockDTO>> listarStock(){
-        return ResponseEntity.ok(service.consultarTodos().stream().map(StockMapper::toDto).toList());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<StockDTO> consultarPorId(@PathVariable Long id){
-        Optional<Stock> respuesta = service.consultarPorId(id);
-        if (respuesta.isPresent()){
-            return ResponseEntity.ok(StockMapper.toDto(respuesta.get()));
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<StockDTO> consultarCodigoSucursal(@RequestParam Long codigo, @RequestParam Long sucursal){
+        StockDTO respuesta = mapper.toDto(service.buscarPorCodigoySucursal(codigo, sucursal).orElseThrow(()->
+                new RecursoNoEncontradoException("No existe stock para el codigo " + codigo + " de la sucursal " + sucursal)));
+        return ResponseEntity.ok(respuesta);
     }
 
 }
