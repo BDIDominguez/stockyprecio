@@ -60,7 +60,8 @@ public class CategoriaController {
             description = "Devuelve una lista paginada de categorías. " +
                     "Puede filtrar por nombre (búsqueda parcial) y por estado activo. " +
                     "Si se envía el parámetro 'nombre', se realizará una búsqueda por coincidencia " +
-                    "en el nombre de la categoría ignorando mayúsculas/minúsculas."
+                    "en el nombre de la categoría ignorando mayúsculas/minúsculas. " +
+                    "Por defecto devuelve solo activas; si se envía activo=false, devuelve eliminadas."
     )
     @ApiResponses(value = {
             @ApiResponse(

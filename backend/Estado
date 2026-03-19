@@ -31,3 +31,40 @@ PATCH   /api/categorias/{codigo}/activar
 GET     /api/categorias/siguiente-codigo
 GET     /api/categorias/codigo/{codigo}
 
+----- Corrigiendo Exception
+
+Revisé common.exception. Está funcionando, pero hay varias cosas para mejorar o corregir. No aplico cambios, solo te explico.
+Problemas / mejoras importantes
+•
+Códigos de error duplicados:
+CodigoRepetidoException, RecursoDuplicadoException y RecursoNoEncontradoException usan todos ERROR-0002. No diferencia el tipo de error y complica al frontend.
+RecursoNoEncontradoException.java, RecursoDuplicadoException.java, CodigoRepetidoException.java
+•
+Mensajes con encoding roto:
+En OperacionNoValidaExeption y en GlobalExceptionHandler aparece OperaciÃ³n y validaciÃ³n. Es el mismo BOM/encoding que vimos antes.
+OperacionNoValidaExeption.java, GlobalExceptionHandler.java
+•
+Respuesta HTTP genérica:
+Todo BaseException se responde con 400. Para el frontend es útil distinguir:
+◦
+RecursoNoEncontrado → 404
+◦
+RecursoDuplicado / CodigoRepetido → 409
+◦
+OperacionNoValida → 400 o 422
+•
+No hay handler para @Positive en PathVariables:
+Las validaciones de parámetros con @Positive lanzan ConstraintViolationException, que no está manejada; hoy caería en error default.
+•
+Error para JSON malformado:
+Si el body es inválido (HttpMessageNotReadableException), no hay handler y el frontend recibe algo genérico.
+Mejoras de estilo/consistencia
+•
+OperacionNoValidaExeption tiene typo: “Exeption” → “Exception”.
+•
+BaseException podría incluir un HttpStatus para centralizar código + status.
+•
+En manejarValidaciones, podrías incluir un codigo fijo (ERROR-VALIDACION) para consistencia.
+•
+Usar una clase de respuesta estándar (p.ej. ErrorResponse) en vez de Map.
+Si quieres, te propongo un diseño de ErrorResponse + status por excepción sin cambiar la lógica del resto.
