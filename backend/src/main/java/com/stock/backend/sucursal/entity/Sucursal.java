@@ -15,12 +15,19 @@ public class Sucursal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private Long codigo;
+    @Column(nullable = false, length = 200)
     private String nombre;
+    @Column(length = 255)
     private String direccion;
+    @Column(length = 50)
     private String telefono;
+    @Column(length = 100)
     private String encargado;
-    private Boolean activo;
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean activo = true;
     @Column(name = "fecha_creacion")
     private LocalDateTime creado;
     @Column(name = "fecha_modificacion")

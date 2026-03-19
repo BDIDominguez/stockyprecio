@@ -1,23 +1,17 @@
 package com.stock.backend.sucursal.service;
 
+import com.stock.backend.common.exception.CodigoRepetidoException;
 import com.stock.backend.common.exception.RecursoNoEncontradoException;
-import com.stock.backend.sucursal.dto.SucursalDTO;
-import com.stock.backend.sucursal.dto.SucursalNuevaDTO;
 import com.stock.backend.sucursal.entity.Sucursal;
-import com.stock.backend.sucursal.mapper.SucursalMapper;
-import com.stock.backend.sucursal.mapper.SucursalNuevaMapper;
 import com.stock.backend.sucursal.repository.SucursalRepository;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,43 +19,61 @@ import java.util.Optional;
 public class SucursalService {
 
     private final SucursalRepository repository;
-    private final SucursalMapper mapper;
-    private final SucursalNuevaMapper nuevaMapper;
 
-    public Page<Sucursal> consultarTodas(Boolean activo, Integer page, Integer size, String sort) {
+    public Page<Sucursal> consultarTodas(Boolean activo, int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
-
         return repository.findByActivo(activo, pageable);
     }
 
-    public Optional<Sucursal> consultarPorSucursal(Long sid) {
-        return repository.findByCodigo(sid);
-    }
-
-
-    public Page<Sucursal> consultarPorNombreIgnoreCase(@Size(min = 2, message = "debe ingresar al menos 2 caracteres") String nombre, int page, int size, String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
-        return repository.findByNombreContainingIgnoreCase(nombre, pageable);
-    }
-
-    public Optional<Sucursal> consultarPorCodigo(long codigo) {
+    public Optional<Sucursal> buscarPorCodigo(Long codigo) {
         return repository.findByCodigo(codigo);
     }
 
+    public Page<Sucursal> buscarPorNombreIgnoreCase(String nombre, Boolean activo, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
+        return repository.findByNombreContainingIgnoreCaseAndActivo(nombre, activo, pageable);
+    }
+
+    public Sucursal crear(Sucursal nueva) {
+        repository.findByCodigo(nueva.getCodigo()).ifPresent(existe -> {
+            throw new CodigoRepetidoException("Ya existe una sucursal con el codigo: " + nueva.getCodigo());
+        });
+        return repository.save(nueva);
+    }
+
+    public Sucursal modificar(Long codigo, Sucursal actualizacion) {
+        Sucursal existe = repository.findByCodigo(codigo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe una sucursal con el codigo: " + codigo));
+
+        if (actualizacion.getCodigo() != null && !Objects.equals(actualizacion.getCodigo(), existe.getCodigo())) {
+            repository.findByCodigo(actualizacion.getCodigo()).ifPresent(otra -> {
+                throw new CodigoRepetidoException("Ya existe una sucursal con el codigo: " + actualizacion.getCodigo());
+            });
+        }
+
+        existe.actualizar(actualizacion);
+        return repository.save(existe);
+    }
+
     public void desactivarPorCodigo(Long codigo) {
-        Sucursal existe = repository.findByCodigo(codigo).orElseThrow(()-> new RecursoNoEncontradoException("No existe una Sucursal con el codigo " + codigo));
+        Sucursal existe = repository.findByCodigo(codigo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe una sucursal con el codigo: " + codigo));
         existe.setActivo(false);
         repository.save(existe);
     }
 
     public void activarPorCodigo(Long codigo) {
-        Sucursal existe = repository.findByCodigo(codigo).orElseThrow(()-> new RecursoNoEncontradoException("No existe una Sucursal con el codigo " + codigo));
+        Sucursal existe = repository.findByCodigo(codigo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe una sucursal con el codigo: " + codigo));
         existe.setActivo(true);
         repository.save(existe);
     }
 
-    public Sucursal crearSucursal(@Valid SucursalNuevaDTO dto) {
-        Sucursal sucursal = repository.save(nuevaMapper.toEntity(dto));
-        return sucursal;
+    public Long siguienteCodigo() {
+        Sucursal sucursal = repository.findTopByOrderByCodigoDesc();
+        if (sucursal == null || sucursal.getCodigo() == null) {
+            return 1L;
+        }
+        return sucursal.getCodigo() + 1;
     }
 }
