@@ -36,23 +36,6 @@ GET     /api/categorias/codigo/{codigo}
 Revisé common.exception. Está funcionando, pero hay varias cosas para mejorar o corregir. No aplico cambios, solo te explico.
 Problemas / mejoras importantes
 •
-Códigos de error duplicados:
-CodigoRepetidoException, RecursoDuplicadoException y RecursoNoEncontradoException usan todos ERROR-0002. No diferencia el tipo de error y complica al frontend.
-RecursoNoEncontradoException.java, RecursoDuplicadoException.java, CodigoRepetidoException.java
-•
-Mensajes con encoding roto:
-En OperacionNoValidaExeption y en GlobalExceptionHandler aparece OperaciÃ³n y validaciÃ³n. Es el mismo BOM/encoding que vimos antes.
-OperacionNoValidaExeption.java, GlobalExceptionHandler.java
-•
-Respuesta HTTP genérica:
-Todo BaseException se responde con 400. Para el frontend es útil distinguir:
-◦
-RecursoNoEncontrado → 404
-◦
-RecursoDuplicado / CodigoRepetido → 409
-◦
-OperacionNoValida → 400 o 422
-•
 No hay handler para @Positive en PathVariables:
 Las validaciones de parámetros con @Positive lanzan ConstraintViolationException, que no está manejada; hoy caería en error default.
 •

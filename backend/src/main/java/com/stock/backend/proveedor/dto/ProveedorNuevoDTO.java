@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-public record ProveedorDTO(
+public record ProveedorNuevoDTO(
         @NotNull(message = "El codigo es obligatorio")
         @Positive(message = "El codigo debe ser mayor a cero")
         Long codigo,
@@ -26,8 +26,6 @@ public record ProveedorDTO(
         String email,
 
         @Size(max = 500, message = "La direccion no puede superar 500 caracteres")
-        String direccion,
-
-        Boolean activo
+        String direccion
 ) {
 }
