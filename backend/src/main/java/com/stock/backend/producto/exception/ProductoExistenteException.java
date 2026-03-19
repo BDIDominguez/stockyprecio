@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class ProductoExistenteException extends BaseException {
     public ProductoExistenteException(String detalle) {
-        super("Ya existe dicho producto", "ERROR-005", detalle, HttpStatus.CONFLICT);
+        super("Ya existe dicho producto", "PROD-409-001", detalle, HttpStatus.CONFLICT);
     }
 }

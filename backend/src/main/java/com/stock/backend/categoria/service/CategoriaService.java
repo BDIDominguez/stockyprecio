@@ -44,10 +44,6 @@ public class CategoriaService {
         return repository.save(existe);
     }
 
-    public Optional<Categoria> consultarPorId(Long categoriaId) {
-        return repository.findById(categoriaId);
-    }
-
     public Optional<Categoria> buscarPorCodigo(Long codigo) {
         return repository.findByCodigo(codigo);
     }

@@ -2,34 +2,10 @@ package com.stock.backend.producto.mapper;
 
 import com.stock.backend.producto.dto.ProductoNuevoDTO;
 import com.stock.backend.producto.entity.Producto;
-import java.time.LocalDateTime;
+import org.mapstruct.Mapper;
 
-public class ProductoNuevoMapper {
-    public static ProductoNuevoDTO toDto(Producto prod){
-        return new ProductoNuevoDTO(
-                prod.getCodigo(),
-                prod.getNombre(),
-                prod.getDescripcion(),
-                prod.getCategoria(),
-                prod.getProveedor(),
-                prod.getStockMinimo(),
-                prod.getManejaStock(),
-                prod.getActivo(),
-                prod.getTipoIva());
-    }
-
-    public static Producto toEntidad(ProductoNuevoDTO prod){
-        return new Producto(-1,
-                prod.codigo(),
-                prod.nombre(),
-                prod.descripcion(),
-                prod.categoriaId(),
-                prod.proveedorId(),
-                prod.stockMinimo(),
-                prod.manejaStock(),
-                prod.activo(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                prod.tipoIva());
-    }
+@Mapper(componentModel = "spring")
+public interface ProductoNuevoMapper {
+    ProductoNuevoDTO toDto(Producto producto);
+    Producto toEntidad(ProductoNuevoDTO dto);
 }

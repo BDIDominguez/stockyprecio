@@ -15,4 +15,12 @@ public class ProductoConsultaPorCodigoService {
     public Optional<Producto> consultar(Long codigo){
         return repository.findByCodigo(codigo);
     }
+
+    public Long siguienteCodigo() {
+        Producto producto = repository.findTopByOrderByCodigoDesc();
+        if (producto == null || producto.getCodigo() == null) {
+            return 1L;
+        }
+        return producto.getCodigo() + 1;
+    }
 }

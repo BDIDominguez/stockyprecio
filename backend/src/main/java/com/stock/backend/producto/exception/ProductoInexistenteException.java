@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class ProductoInexistenteException extends BaseException {
     public ProductoInexistenteException(String detalle) {
-        super("No existe dicho producto", "ERROR-005", detalle, HttpStatus.NOT_FOUND);
+        super("No existe dicho producto", "PROD-404-001", detalle, HttpStatus.NOT_FOUND);
     }
 }

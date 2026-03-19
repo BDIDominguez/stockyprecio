@@ -32,10 +32,6 @@ public class ProveedorService {
         return proveedorRepository.save(nuevo);
     }
 
-    public Optional<Proveedor> consultarPorID(Long id) {
-        return proveedorRepository.findById(id);
-    }
-
     public Long siguienteCodigo() {
         Proveedor proveedor = proveedorRepository.findTopByOrderByCodigoDesc();
         if (proveedor == null || proveedor.getCodigo() == null) {

@@ -10,13 +10,12 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class ProductoFacadeService {
-    private ProductoConsultarTodosActivosServices productoConsultarTodosActivos;
-    private ProductoConsultarTodosInactivosServices productoConsultarTodosInactivos;
-    private ProductoConsultarPorIdService productoConsultarPorId;
-    private ProductoConsultaPorCodigoService productoConsultaPorCodigo;
-    private ProductoCrearService productoCrear;
-    private ProductoModificarService productoModificar;
-    private ProductoConsultarTodosServices productoConsultarTodos;
+    private final ProductoConsultarTodosActivosServices productoConsultarTodosActivos;
+    private final ProductoConsultarTodosInactivosServices productoConsultarTodosInactivos;
+    private final ProductoConsultaPorCodigoService productoConsultaPorCodigo;
+    private final ProductoCrearService productoCrear;
+    private final ProductoModificarService productoModificar;
+    private final ProductoConsultarTodosServices productoConsultarTodos;
 
     public List<Producto> consultarTodos(){
         return productoConsultarTodos.consultarTodos();
@@ -30,10 +29,6 @@ public class ProductoFacadeService {
         return productoConsultarTodosInactivos.consultarTodos();
     }
 
-    public Optional<Producto> consultarPorId(Long id){
-        return productoConsultarPorId.consultar(id);
-    }
-
     public Optional<Producto> consultarPorCodigo(Long codigo){
         return productoConsultaPorCodigo.consultar(codigo);
     }
@@ -42,7 +37,11 @@ public class ProductoFacadeService {
         return productoCrear.nuevo(nuevo);
     }
 
-    public Producto actualizar(Long id, Producto modificacion){
-        return productoModificar.actualizar(id, modificacion);
+    public Producto actualizarPorCodigo(Long codigo, Producto modificacion){
+        return productoModificar.actualizarPorCodigo(codigo, modificacion);
+    }
+
+    public Long siguienteCodigo() {
+        return productoConsultaPorCodigo.siguienteCodigo();
     }
 }

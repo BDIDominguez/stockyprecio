@@ -15,4 +15,6 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findAllByActivoTrue();
 
     List<Producto> findAllByActivoFalse();
+
+    Producto findTopByOrderByCodigoDesc();
 }
