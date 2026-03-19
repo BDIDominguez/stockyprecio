@@ -10,7 +10,7 @@ import com.stock.backend.producto.mapper.ProductoCompletoMapper;
 import com.stock.backend.proveedor.service.ProveedorService;
 
 import com.stock.backend.producto.service.ProductoFacadeService;
-import com.stock.backend.stock.service.StockFacadeService;
+import com.stock.backend.stock.service.StockService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class CrearProductoCompleto {
     private final ProductoFacadeService productoService;
-    private final StockFacadeService stockService;
+    private final StockService stockService;
     private final CategoriaService categoriaService;
     private final ProveedorService proveedorService;
 
@@ -37,7 +37,7 @@ public class CrearProductoCompleto {
                 producto.setProveedor(null);
             }
         }
-        Stock stock = stockService.guardar(new Stock(null,producto.getCodigo(), sucursal, 0.00, 0.00));
+        Stock stock = stockService.crearInicial(producto.getCodigo(), sucursal);
         producto = productoService.crear(producto);
         return ProductoCompletoMapper.toDto(producto,categoria,proveedor,stock);
     }

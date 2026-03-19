@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 
 public class StockExistenteException extends BaseException {
     public StockExistenteException(String detalle) {
-        super("Ese codigo ya existe para esa sucursdal", "ERROR-006", detalle, HttpStatus.CONFLICT);
+        super("Ya existe stock para ese codigo y sucursal", "STK-409-001", detalle, HttpStatus.CONFLICT);
     }
 }
