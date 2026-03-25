@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProductoActualizacionPrecioRepository extends JpaRepository<ProductoActualizacionPrecio, Long> {
     List<ProductoActualizacionPrecio> findAllByActualizacion(Long actualizacion);
-    Optional<ProductoActualizacionPrecio> findByActualizacionAndListaPrecio(Long actualizacion, Long listaPrecio);
+    Optional<ProductoActualizacionPrecio> findByActualizacionAndListaPrecio(Long actualizacion, String listaPrecio);
 }

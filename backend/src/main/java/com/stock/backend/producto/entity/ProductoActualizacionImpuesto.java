@@ -29,8 +29,8 @@ public class ProductoActualizacionImpuesto {
     @Column(nullable = false)
     private Long actualizacion;
 
-    @Column(nullable = false)
-    private Long impuesto;
+    @Column(nullable = false, length = 30)
+    private String impuesto;
 
     @Column(nullable = false)
     private Integer ordenAplicacion;

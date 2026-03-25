@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProductoActualizacionImpuestoRepository extends JpaRepository<ProductoActualizacionImpuesto, Long> {
     List<ProductoActualizacionImpuesto> findAllByActualizacionOrderByOrdenAplicacionAsc(Long actualizacion);
-    Optional<ProductoActualizacionImpuesto> findByActualizacionAndImpuesto(Long actualizacion, Long impuesto);
+    Optional<ProductoActualizacionImpuesto> findByActualizacionAndImpuesto(Long actualizacion, String impuesto);
 }

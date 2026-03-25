@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface ProductoImpuestoRepository extends JpaRepository<ProductoImpuesto, Long> {
     List<ProductoImpuesto> findAllByCodigoProducto(Long codigoProducto);
     List<ProductoImpuesto> findAllByCodigoProductoAndActivoTrueOrderByOrdenAplicacionAsc(Long codigoProducto);
-    Optional<ProductoImpuesto> findByCodigoProductoAndImpuesto(Long codigoProducto, Long impuesto);
+    Optional<ProductoImpuesto> findByCodigoProductoAndImpuesto(Long codigoProducto, String impuesto);
 }

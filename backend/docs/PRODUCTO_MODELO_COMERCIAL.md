@@ -43,6 +43,7 @@ El modelo se divide en dos grupos:
 ### Cambios e historial
 - `ProductoActualizacion`
 - `ProductoActualizacionDato`
+- `ProductoActualizacionCosto`
 - `ProductoActualizacionImpuesto`
 - `ProductoActualizacionPrecio`
 
@@ -59,6 +60,7 @@ Distribucion propuesta:
 - `ProductoImpuesto`
 - `ProductoActualizacion`
 - `ProductoActualizacionDato`
+- `ProductoActualizacionCosto`
 - `ProductoActualizacionImpuesto`
 - `ProductoActualizacionPrecio`
 
@@ -330,7 +332,21 @@ Claves:
 Notas:
 - si una actualizacion no modifica datos base, este registro puede no existir.
 
-### 11. ProductoActualizacionImpuesto
+### 11. ProductoActualizacionCosto
+Responsabilidad:
+- guardar el costo que tendra el producto cuando la actualizacion se aplique
+
+Campos:
+- `id: Long`
+- `actualizacion: Long`
+- `costo: BigDecimal`
+- `moneda: String`
+
+Claves:
+- PK: `id`
+- UK: `actualizacion`
+
+### 12. ProductoActualizacionImpuesto
 Responsabilidad:
 - guardar los impuestos que tendra el producto cuando la actualizacion se aplique
 
@@ -348,7 +364,7 @@ Notas:
 - representa la fotografia de impuestos de esa actualizacion, pero en forma normalizada.
 - no usa JSON ni snapshot como estructura principal.
 
-### 12. ProductoActualizacionPrecio
+### 13. ProductoActualizacionPrecio
 Responsabilidad:
 - guardar los precios que tendra el producto por lista cuando la actualizacion se aplique
 
@@ -386,6 +402,7 @@ Notas:
 ### Actualizaciones
 - `Producto` 1 -> N `ProductoActualizacion`
 - `ProductoActualizacion` 1 -> 0..1 `ProductoActualizacionDato`
+- `ProductoActualizacion` 1 -> 0..1 `ProductoActualizacionCosto`
 - `ProductoActualizacion` 1 -> 0..N `ProductoActualizacionImpuesto`
 - `ProductoActualizacion` 1 -> 0..N `ProductoActualizacionPrecio`
 

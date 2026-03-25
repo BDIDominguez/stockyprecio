@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface ProductoPrecioRepository extends JpaRepository<ProductoPrecio, Long> {
     List<ProductoPrecio> findAllByCodigoProducto(Long codigoProducto);
-    List<ProductoPrecio> findAllByListaPrecio(Long listaPrecio);
+    List<ProductoPrecio> findAllByListaPrecio(String listaPrecio);
     List<ProductoPrecio> findAllByCodigoProductoAndActivoTrue(Long codigoProducto);
-    Optional<ProductoPrecio> findByCodigoProductoAndListaPrecio(Long codigoProducto, Long listaPrecio);
-    Optional<ProductoPrecio> findByCodigoProductoAndListaPrecioAndActivoTrue(Long codigoProducto, Long listaPrecio);
+    Optional<ProductoPrecio> findByCodigoProductoAndListaPrecio(Long codigoProducto, String listaPrecio);
+    Optional<ProductoPrecio> findByCodigoProductoAndListaPrecioAndActivoTrue(Long codigoProducto, String listaPrecio);
 }

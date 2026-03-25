@@ -33,8 +33,8 @@ public class ProductoImpuesto {
     @Column(nullable = false)
     private Long codigoProducto;
 
-    @Column(nullable = false)
-    private Long impuesto;
+    @Column(nullable = false, length = 30)
+    private String impuesto;
 
     @Column(nullable = false)
     private Integer ordenAplicacion;

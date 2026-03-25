@@ -31,8 +31,8 @@ public class ProductoActualizacionPrecio {
     @Column(nullable = false)
     private Long actualizacion;
 
-    @Column(nullable = false)
-    private Long listaPrecio;
+    @Column(nullable = false, length = 30)
+    private String listaPrecio;
 
     @Column(nullable = false, length = 20)
     private String modoCalculo;
