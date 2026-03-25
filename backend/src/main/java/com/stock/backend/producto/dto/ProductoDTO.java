@@ -8,11 +8,9 @@ public record ProductoDTO(
         String descripcion,
         Long categoria,
         Long proveedor,
-        Double stockMinimo,
         Boolean manejaStock,
         Boolean activo,
         LocalDateTime fechaCreacion,
-        LocalDateTime fechaModificacion,
-        Long tipoIva
+        LocalDateTime fechaModificacion
 ) {
 }

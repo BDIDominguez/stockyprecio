@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -15,24 +13,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(
-        name = "producto_precios",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"codigoProducto", "listaPrecio"})
+        name = "producto_actualizacion_precios",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"actualizacion", "listaPrecio"})
 )
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductoPrecio {
+public class ProductoActualizacionPrecio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private Long codigoProducto;
+    private Long actualizacion;
 
     @Column(nullable = false)
     private Long listaPrecio;
@@ -58,30 +55,7 @@ public class ProductoPrecio {
     @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal precioFinal;
 
-    @Builder.Default
-    @Column(nullable = false)
-    private Boolean activo = true;
-
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaModificacion;
-
-    @PrePersist
-    public void prePersist() {
-        LocalDateTime now = LocalDateTime.now();
-        this.fechaCreacion = now;
-        this.fechaModificacion = now;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.fechaModificacion = LocalDateTime.now();
-    }
-
-    public boolean isActivo() {
-        return this.activo != null && this.activo;
-    }
-
-    public void actualizar(ProductoPrecio nuevosDatos) {
+    public void actualizar(ProductoActualizacionPrecio nuevosDatos) {
         if (nuevosDatos.getModoCalculo() != null && !nuevosDatos.getModoCalculo().trim().isEmpty()) {
             this.modoCalculo = nuevosDatos.getModoCalculo().trim();
         }
@@ -102,9 +76,6 @@ public class ProductoPrecio {
         }
         if (nuevosDatos.getPrecioFinal() != null) {
             this.precioFinal = nuevosDatos.getPrecioFinal();
-        }
-        if (nuevosDatos.getActivo() != null) {
-            this.activo = nuevosDatos.getActivo();
         }
     }
 }

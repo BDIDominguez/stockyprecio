@@ -1,4 +1,4 @@
-package com.stock.backend.producto.entity;
+package com.stock.backend.impuesto.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,24 +17,27 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "producto_costos")
+@Table(name = "impuestos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductoCosto {
+public class Impuesto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private Long codigoProducto;
+    @Column(nullable = false, unique = true, length = 30)
+    private String codigo;
 
-    @Column(nullable = false, precision = 12, scale = 4)
-    private BigDecimal costo;
+    @Column(nullable = false, length = 100)
+    private String nombre;
 
-    @Column(length = 20)
-    private String moneda;
+    @Column(length = 500)
+    private String descripcion;
+
+    @Column(nullable = false, precision = 8, scale = 4)
+    private BigDecimal porcentaje;
 
     @Builder.Default
     @Column(nullable = false)
@@ -59,12 +62,18 @@ public class ProductoCosto {
         return this.activo != null && this.activo;
     }
 
-    public void actualizar(ProductoCosto nuevosDatos) {
-        if (nuevosDatos.getCosto() != null) {
-            this.costo = nuevosDatos.getCosto();
+    public void actualizar(Impuesto nuevosDatos) {
+        if (nuevosDatos.getCodigo() != null && !nuevosDatos.getCodigo().trim().isEmpty()) {
+            this.codigo = nuevosDatos.getCodigo().trim();
         }
-        if (nuevosDatos.getMoneda() != null) {
-            this.moneda = nuevosDatos.getMoneda().trim();
+        if (nuevosDatos.getNombre() != null && !nuevosDatos.getNombre().trim().isEmpty()) {
+            this.nombre = nuevosDatos.getNombre().trim();
+        }
+        if (nuevosDatos.getDescripcion() != null) {
+            this.descripcion = nuevosDatos.getDescripcion().trim();
+        }
+        if (nuevosDatos.getPorcentaje() != null) {
+            this.porcentaje = nuevosDatos.getPorcentaje();
         }
         if (nuevosDatos.getActivo() != null) {
             this.activo = nuevosDatos.getActivo();

@@ -1,6 +1,5 @@
 package com.stock.backend.producto.dto;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -24,13 +23,7 @@ public record ProductoNuevoDTO(
         @Positive(message = "El proveedor debe ser mayor a cero")
         Long proveedor,
 
-        @Min(value = 0, message = "Stock minimo no puede ser negativo")
-        Double stockMinimo,
-
         Boolean manejaStock,
-        Boolean activo,
-
-        @Positive(message = "El tipo de IVA debe ser mayor a cero")
-        Long tipoIva
+        Boolean activo
 ) {
 }

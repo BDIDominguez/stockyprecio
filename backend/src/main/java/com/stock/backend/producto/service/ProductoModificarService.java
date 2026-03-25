@@ -24,7 +24,7 @@ public class ProductoModificarService {
             });
         }
 
-        existe.actualizarCampos(nuevo);
+        existe.actualizar(nuevo);
         return repository.save(existe);
     }
 }

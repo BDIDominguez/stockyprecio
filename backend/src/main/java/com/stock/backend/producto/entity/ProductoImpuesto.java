@@ -8,33 +8,36 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "producto_costos")
+@Table(
+        name = "producto_impuestos",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"codigoProducto", "impuesto"})
+)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductoCosto {
+public class ProductoImpuesto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Long codigoProducto;
 
-    @Column(nullable = false, precision = 12, scale = 4)
-    private BigDecimal costo;
+    @Column(nullable = false)
+    private Long impuesto;
 
-    @Column(length = 20)
-    private String moneda;
+    @Column(nullable = false)
+    private Integer ordenAplicacion;
 
     @Builder.Default
     @Column(nullable = false)
@@ -59,12 +62,12 @@ public class ProductoCosto {
         return this.activo != null && this.activo;
     }
 
-    public void actualizar(ProductoCosto nuevosDatos) {
-        if (nuevosDatos.getCosto() != null) {
-            this.costo = nuevosDatos.getCosto();
+    public void actualizar(ProductoImpuesto nuevosDatos) {
+        if (nuevosDatos.getImpuesto() != null) {
+            this.impuesto = nuevosDatos.getImpuesto();
         }
-        if (nuevosDatos.getMoneda() != null) {
-            this.moneda = nuevosDatos.getMoneda().trim();
+        if (nuevosDatos.getOrdenAplicacion() != null) {
+            this.ordenAplicacion = nuevosDatos.getOrdenAplicacion();
         }
         if (nuevosDatos.getActivo() != null) {
             this.activo = nuevosDatos.getActivo();
