@@ -5,9 +5,12 @@ import com.stock.backend.common.exception.RecursoNoEncontradoException;
 import com.stock.backend.listaPrecio.entity.ListaPrecio;
 import com.stock.backend.listaPrecio.repository.ListaPrecioRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,18 +18,21 @@ import java.util.Optional;
 public class ListaPrecioService {
     private final ListaPrecioRepository repository;
 
-    public List<ListaPrecio> consultarTodos(Boolean activo) {
-        if (activo == null) {
-            return repository.findAll();
-        }
-        return activo ? repository.findAllByActivoTrue() : repository.findAllByActivoFalse();
+    public Page<ListaPrecio> consultarTodos(Boolean activo, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
+        return repository.findByActivo(activo, pageable);
     }
 
-    public Optional<ListaPrecio> buscarPorCodigo(String codigo) {
+    public Page<ListaPrecio> buscarPorNombreIgnoreCase(String nombre, Boolean activo, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).ascending());
+        return repository.findByNombreContainingIgnoreCaseAndActivo(nombre, activo, pageable);
+    }
+
+    public Optional<ListaPrecio> buscarPorCodigo(Long codigo) {
         return repository.findByCodigo(codigo);
     }
 
-    public ListaPrecio consultarPorCodigo(String codigo) {
+    public ListaPrecio consultarPorCodigo(Long codigo) {
         return repository.findByCodigo(codigo)
                 .orElseThrow(() -> new RecursoNoEncontradoException("No existe lista de precio con codigo: " + codigo));
     }
@@ -38,9 +44,9 @@ public class ListaPrecioService {
         return repository.save(datos);
     }
 
-    public ListaPrecio modificar(String codigo, ListaPrecio datos) {
+    public ListaPrecio modificar(Long codigo, ListaPrecio datos) {
         ListaPrecio existe = consultarPorCodigo(codigo);
-        if (datos.getCodigo() != null && !datos.getCodigo().equalsIgnoreCase(existe.getCodigo())) {
+        if (datos.getCodigo() != null && !datos.getCodigo().equals(existe.getCodigo())) {
             repository.findByCodigo(datos.getCodigo()).ifPresent(otro -> {
                 throw new CodigoRepetidoException("Ya existe una lista de precio con codigo: " + datos.getCodigo());
             });
@@ -49,15 +55,23 @@ public class ListaPrecioService {
         return repository.save(existe);
     }
 
-    public void desactivar(String codigo) {
+    public void desactivar(Long codigo) {
         ListaPrecio existe = consultarPorCodigo(codigo);
         existe.setActivo(false);
         repository.save(existe);
     }
 
-    public void activar(String codigo) {
+    public void activar(Long codigo) {
         ListaPrecio existe = consultarPorCodigo(codigo);
         existe.setActivo(true);
         repository.save(existe);
+    }
+
+    public Long siguienteCodigo() {
+        ListaPrecio listaPrecio = repository.findTopByOrderByCodigoDesc();
+        if (listaPrecio == null || listaPrecio.getCodigo() == null) {
+            return 1L;
+        }
+        return listaPrecio.getCodigo() + 1;
     }
 }

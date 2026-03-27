@@ -48,11 +48,21 @@ public class StockService {
     }
 
     public Stock crearInicial(Long codigo, Long sucursal) {
+        return crearInicial(codigo, sucursal, 0.00);
+    }
+
+    public Stock crearInicial(Long codigo, Long sucursal, Double reserva) {
+        if (reserva == null) {
+            reserva = 0.00;
+        }
+        if (reserva < 0) {
+            throw new OperacionNoValidaExeption("La reserva no puede ser negativa.");
+        }
         return guardar(Stock.builder()
                 .codigo(codigo)
                 .sucursal(sucursal)
                 .cantidad(0.00)
-                .reserva(0.00)
+                .reserva(reserva)
                 .build());
     }
 

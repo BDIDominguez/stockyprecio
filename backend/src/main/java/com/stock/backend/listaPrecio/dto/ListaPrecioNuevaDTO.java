@@ -1,12 +1,14 @@
 package com.stock.backend.listaPrecio.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public record ListaPrecioNuevaDTO(
-        @NotBlank(message = "Codigo es obligatorio")
-        @Size(max = 30, message = "Codigo no puede exceder 30 caracteres")
-        String codigo,
+        @NotNull(message = "Codigo es obligatorio")
+        @Positive(message = "Codigo debe ser mayor a cero")
+        Long codigo,
 
         @NotBlank(message = "Nombre es obligatorio")
         @Size(max = 100, message = "Nombre no puede exceder 100 caracteres")

@@ -1,0 +1,33 @@
+.selector-sucursal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selector-sucursal label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.selector-sucursal select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  font-size: 14px;
+  min-width: 200px;
+  cursor: pointer;
+}
+
+.selector-sucursal select:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+.selector-sucursal-loading,
+.selector-sucursal-empty {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+}

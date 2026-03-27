@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
         name = "producto_precios",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"codigoProducto", "listaPrecio"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"producto", "listaPrecio"})
 )
 @Data
 @NoArgsConstructor
@@ -32,35 +32,26 @@ public class ProductoPrecio {
     private Long id;
 
     @Column(nullable = false)
-    private Long codigoProducto;
+    private Long producto;
 
-    @Column(nullable = false, length = 30)
-    private String listaPrecio;
-
-    @Column(nullable = false, length = 20)
-    private String modoCalculo;
+    @Column(nullable = false)
+    private Long listaPrecio;
 
     @Column(nullable = false, precision = 12, scale = 4)
-    private BigDecimal costoBase;
+    private BigDecimal costoFinalReferencia;
 
-    @Column(precision = 8, scale = 4)
+    @Column(nullable = false, precision = 8, scale = 4)
     private BigDecimal margenPorcentaje;
 
-    @Column(precision = 12, scale = 4)
-    private BigDecimal precioManual;
-
-    @Column(nullable = false, precision = 12, scale = 4)
-    private BigDecimal subtotalAntesImpuestos;
-
-    @Column(nullable = false, precision = 12, scale = 4)
-    private BigDecimal importeImpuestos;
-
     @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal precioFinal;
+    private BigDecimal precioVenta;
 
     @Builder.Default
     @Column(nullable = false)
     private Boolean activo = true;
+
+    @Column(nullable = false)
+    private LocalDateTime fechaCalculo;
 
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaModificacion;
@@ -70,6 +61,9 @@ public class ProductoPrecio {
         LocalDateTime now = LocalDateTime.now();
         this.fechaCreacion = now;
         this.fechaModificacion = now;
+        if (this.fechaCalculo == null) {
+            this.fechaCalculo = now;
+        }
     }
 
     @PreUpdate
@@ -82,29 +76,20 @@ public class ProductoPrecio {
     }
 
     public void actualizar(ProductoPrecio nuevosDatos) {
-        if (nuevosDatos.getModoCalculo() != null && !nuevosDatos.getModoCalculo().trim().isEmpty()) {
-            this.modoCalculo = nuevosDatos.getModoCalculo().trim();
-        }
-        if (nuevosDatos.getCostoBase() != null) {
-            this.costoBase = nuevosDatos.getCostoBase();
+        if (nuevosDatos.getCostoFinalReferencia() != null) {
+            this.costoFinalReferencia = nuevosDatos.getCostoFinalReferencia();
         }
         if (nuevosDatos.getMargenPorcentaje() != null) {
             this.margenPorcentaje = nuevosDatos.getMargenPorcentaje();
         }
-        if (nuevosDatos.getPrecioManual() != null) {
-            this.precioManual = nuevosDatos.getPrecioManual();
-        }
-        if (nuevosDatos.getSubtotalAntesImpuestos() != null) {
-            this.subtotalAntesImpuestos = nuevosDatos.getSubtotalAntesImpuestos();
-        }
-        if (nuevosDatos.getImporteImpuestos() != null) {
-            this.importeImpuestos = nuevosDatos.getImporteImpuestos();
-        }
-        if (nuevosDatos.getPrecioFinal() != null) {
-            this.precioFinal = nuevosDatos.getPrecioFinal();
+        if (nuevosDatos.getPrecioVenta() != null) {
+            this.precioVenta = nuevosDatos.getPrecioVenta();
         }
         if (nuevosDatos.getActivo() != null) {
             this.activo = nuevosDatos.getActivo();
+        }
+        if (nuevosDatos.getFechaCalculo() != null) {
+            this.fechaCalculo = nuevosDatos.getFechaCalculo();
         }
     }
 }

@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Memoria de trabajo (archivo local)
+memoria.md

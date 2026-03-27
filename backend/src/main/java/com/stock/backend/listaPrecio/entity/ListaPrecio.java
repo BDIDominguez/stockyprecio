@@ -26,8 +26,8 @@ public class ListaPrecio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 30)
-    private String codigo;
+    @Column(nullable = false, unique = true)
+    private Long codigo;
 
     @Column(nullable = false, length = 100)
     private String nombre;
@@ -59,8 +59,8 @@ public class ListaPrecio {
     }
 
     public void actualizar(ListaPrecio nuevosDatos) {
-        if (nuevosDatos.getCodigo() != null && !nuevosDatos.getCodigo().trim().isEmpty()) {
-            this.codigo = nuevosDatos.getCodigo().trim();
+        if (nuevosDatos.getCodigo() != null) {
+            this.codigo = nuevosDatos.getCodigo();
         }
         if (nuevosDatos.getNombre() != null && !nuevosDatos.getNombre().trim().isEmpty()) {
             this.nombre = nuevosDatos.getNombre().trim();
